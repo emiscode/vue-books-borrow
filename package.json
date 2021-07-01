@@ -12,7 +12,8 @@
   "proxy": "http://localhost:30001",
   "dependencies": {
     "axios": "^0.21.1",
-    "vue": "^2.3.3"
+    "vue": "^2.3.3",
+    "vue-router": "^3.5.2"
   },
   "devDependencies": {
     "babel-core": "^6.0.20",

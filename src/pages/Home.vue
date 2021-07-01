@@ -1,54 +1,66 @@
 <template>
   <main-layout>
-    <div class="container">
-      <p class="main-text">
-        BBS is an online platform for sharing books with other readers that you
-        don’t necessarily know. It brings together people who have a similar
-        liking for a genre of books and allows them to create connections
-        through the reading experience.
-      </p>
-    </div>
+    <div class="initial-load">
+      <div class="container">
+        <p class="main-text">
+          BBS is an online platform for sharing books with other readers that
+          you don’t necessarily know. It brings together people who have a
+          similar liking for a genre of books and allows them to create
+          connections through the reading experience.
+        </p>
+      </div>
 
-    <div id="login-page" class="row">
-      <div class="col s12 z-depth-6 card-panel">
-        <form class="login-form">
-          <div class="row"></div>
-          <div class="row">
-            <div class="input-field col s12">
-              <i class="material-icons prefix">mail_outline</i>
-              <input class="validate" id="email" type="email" />
-              <label for="email" data-error="wrong" data-success="right"
-                >Email</label
-              >
+      <div id="login-page" class="row">
+        <div class="col s12 z-depth-6 card-panel">
+          <form @submit.prevent="auth" class="login-form">
+            <div class="row"></div>
+            <div class="row">
+              <div class="input-field col s12">
+                <i class="material-icons prefix">mail_outline</i>
+                <input
+                  class="validate"
+                  id="email"
+                  type="email"
+                  v-model="login.email"
+                />
+                <label for="email" data-error="wrong" data-success="right"
+                  >Email</label
+                >
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <i class="material-icons prefix">lock_outline</i>
-              <input id="password" type="password" />
-              <label for="password">Password</label>
+            <div class="row">
+              <div class="input-field col s12">
+                <i class="material-icons prefix">lock_outline</i>
+                <input id="password" type="password" v-model="login.password" />
+                <label for="password">Password</label>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <a href="#" class="btn waves-effect waves-light col s12 btn-login"
-                >Login</a
-              >
+            <div class="row">
+              <div class="input-field col s12">
+                <button class="btn waves-effect waves-light col s12 btn-login">
+                  Login
+                </button>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s6 m6 l6">
-              <p class="margin medium-small">
-                <a href="#" class="btn-login-aux">Register Now!</a>
-              </p>
+            <div class="row">
+              <ul>
+                <li v-for="(error, index) of errors" :key="index">
+                  <span class="text-error">{{ error }}</span>
+                </li>
+              </ul>
+              <div class="input-field col s6 m6 l6">
+                <p class="margin medium-small">
+                  <a href="#" class="btn-login-aux">Register Now!</a>
+                </p>
+              </div>
+              <div class="input-field col s6 m6 l6">
+                <p class="margin right-align medium-small">
+                  <a href="#" class="btn-login-aux">Forgot password?</a>
+                </p>
+              </div>
             </div>
-            <div class="input-field col s6 m6 l6">
-              <p class="margin right-align medium-small">
-                <a href="#" class="btn-login-aux">Forgot password?</a>
-              </p>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </main-layout>
@@ -56,10 +68,35 @@
 
 <script>
 import MainLayout from '../layouts/Main.vue'
+import Auth from '../services/auth'
 
 export default {
   components: {
     MainLayout,
+  },
+  data() {
+    return {
+      login: {
+        email: null,
+        password: null,
+      },
+      errors: [],
+    }
+  },
+  methods: {
+    auth() {
+      Auth.authenticate(this.login)
+        .then(res => {
+          localStorage.BBS_userAuthToken = res.data.token
+          this.render('my-account')
+        })
+        .catch(e => {
+          this.errors = e.response.data
+        })
+    },
+    render(route) {
+      window.location.href = route
+    },
   },
 }
 </script>
@@ -102,5 +139,16 @@ body {
 .btn-login-aux {
   font-weight: bold;
   color: #b8860b !important;
+}
+.text-error {
+  display: block;
+  margin: 0 auto;
+  width: fit-content;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px;
+  color: #f1f1f1;
+  background: darkred;
 }
 </style>
