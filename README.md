@@ -8,6 +8,6 @@ How to run
 then
 `npm run dev`
 
-Abrir http://localhost:8080
+Open http://localhost:8080
 
 ### [Back-end project: Book Borrow Service API](https://github.com/emiscode/node-books-api)
