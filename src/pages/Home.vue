@@ -1,6 +1,6 @@
 <template>
   <main-layout>
-    <div class="initial-load">
+    <div class="initial-load box-content">
       <div class="container">
         <p class="main-text">
           BBS is an online platform for sharing books with other readers that
@@ -87,6 +87,8 @@ export default {
     auth() {
       Auth.authenticate(this.login)
         .then(res => {
+          localStorage.BBS_userAuthId = res.data.user._id
+          localStorage.BBS_userAuthName = res.data.user.name
           localStorage.BBS_userAuthToken = res.data.token
           this.render('my-account')
         })

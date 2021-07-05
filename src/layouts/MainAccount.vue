@@ -1,10 +1,22 @@
 <template>
-  <div class="container">
+  <div class="menu-account">
     <nav>
       <div class="nav-wrapper teal darken-4">
-        <a href="/" class="brand-logo center">Borrow Books Service</a>
+        <ul id="nav-mobile" class="left">
+          <li><a href="my-account">Home</a></li>
+          <li><a href="my-library">My Library</a></li>
+          <li><a href="my-borrowings">My Borrowings</a></li>
+          <li><a href="my-friends">My Friends</a></li>
+          <li><a href="my-data">My Data</a></li>
+        </ul>
         <ul id="nav-mobile" class="right">
-          <!--<li><a href="#">GitHub</a></li>-->
+          <li>
+            <span
+              ><i class="material-icons left">account_circle</i
+              >{{ user.name }}</span
+            >
+            <a href="#" @click="logout()" class="btn-logout right">Sign out</a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -14,11 +26,17 @@
 
 <script>
 import VLink from '../components/VLink.vue'
-import Auth from '../services/auth'
 
 export default {
   components: {
     VLink,
+  },
+  data() {
+    return {
+      user: {
+        name: localStorage.BBS_userAuthName,
+      },
+    }
   },
   beforeMount() {
     if (!this.isUserAuthenticated() && !this.isHome()) this.router('/')
@@ -40,6 +58,11 @@ export default {
     },
     render() {
       document.querySelector('.initial-load').classList.add('auth-display')
+    },
+    logout() {
+      localStorage.removeItem('BBS_userAuthId')
+      localStorage.removeItem('BBS_userAuthToken')
+      window.location.href = '/'
     },
   },
 }
@@ -68,12 +91,5 @@ export default {
   font-size: 12px;
   font-weight: bold;
   color: #b8860b !important;
-}
-</style>
-
-<style>
-.box-content {
-  padding: 25px;
-  border: 2px solid #8b4513;
 }
 </style>

@@ -1,8 +1,7 @@
 <template>
   <main-layout>
-    <div class="initial-load">
-      <a href="#" @click="logout()" class="btn-logout right">Sign out</a>
-      <p>My Account</p>
+    <main-layout-account></main-layout-account>
+    <div class="initial-load box-content">
       <div class="row">
         <div
           class="col m3 box-book"
@@ -25,12 +24,13 @@
 
 <script>
 import MainLayout from '../layouts/Main.vue'
+import MainLayoutAccount from '../layouts/MainAccount.vue'
 import Books from '../services/books'
-import Auth from '../services/auth'
 
 export default {
   components: {
     MainLayout,
+    MainLayoutAccount,
   },
 
   data() {
@@ -47,6 +47,12 @@ export default {
       booksList: [],
       errors: [],
     }
+  },
+
+  mounted() {
+    this.listAll()
+    console.log(localStorage.userAuthId)
+    console.log(localStorage.userAuthToken)
   },
 
   methods: {
@@ -149,5 +155,10 @@ export default {
 }
 .box-book-info {
   min-height: 150px;
+}
+
+.box-content {
+  padding: 25px;
+  border: 2px solid #8b4513;
 }
 </style>
