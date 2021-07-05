@@ -2,9 +2,10 @@
 
 ### The front-end written in Vue to showcase the Books Borrow Service
 
-Para executar
-
+How to run
 `npm install`
+
+then
 `npm run dev`
 
 Abrir http://localhost:8080
